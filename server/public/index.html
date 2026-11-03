@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SyncWatch</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%23ff5a36'/><path d='M12 9l12 7-12 7z' fill='white'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Tela de entrada -->
+  <main id="lobby" class="lobby">
+    <div class="lobby-card">
+      <div class="brand">
+        <span class="logo" aria-hidden="true"></span>
+        <h1>SyncWatch</h1>
+      </div>
+      <p class="tagline">Assista junto, no mesmo segundo.</p>
+      <form id="joinForm" autocomplete="off">
+        <label>Seu nome
+          <input id="nameInput" maxlength="24" placeholder="Ex.: Juninho" required>
+        </label>
+        <label>Código da sala
+          <div class="row">
+            <input id="roomInput" maxlength="32" placeholder="ex.: sessao-de-sexta" required>
+            <button type="button" id="randomRoom" class="ghost" title="Gerar código">Gerar</button>
+          </div>
+        </label>
+        <button type="submit" class="primary">Entrar na sala</button>
+      </form>
+      <a id="openApp" class="open-app" href="#">Tem o app SyncWatch? <b>Abrir no app</b></a>
+      <p class="hint">Mande o link da sala para o seu amigo — ele entra direto.</p>
+    </div>
+  </main>
+
+  <!-- Sala -->
+  <div id="app" class="app" hidden>
+    <header class="topbar">
+      <div class="brand small">
+        <span class="logo" aria-hidden="true"></span>
+        <strong>SyncWatch</strong>
+      </div>
+      <div class="room-pill">
+        Sala <b id="roomName"></b>
+        <button id="copyInvite" class="ghost sm">Copiar convite</button>
+      </div>
+      <div class="conn" id="connStatus"><span class="dot"></span><span class="label">Conectando…</span></div>
+    </header>
+
+    <section class="stage">
+      <form id="loadForm" class="load-bar" autocomplete="off">
+        <input id="urlInput" placeholder="Cole um link do YouTube e aperte Enter">
+        <button type="submit" class="primary">Assistir</button>
+      </form>
+
+      <div class="player-wrap">
+        <div id="player"></div>
+        <div id="emptyState" class="empty">
+          <p>Nenhum vídeo ainda.</p>
+          <span>Cole um link do YouTube acima. Para Netflix, Prime e outros, use o app SyncWatch.</span>
+        </div>
+        <div id="externalState" class="empty" hidden>
+          <p>A sala está assistindo pelo app</p>
+          <span id="externalTitle"></span>
+        </div>
+        <button id="unblock" class="unblock" hidden>Clique para sincronizar o vídeo</button>
+      </div>
+
+      <div class="sync-strip">
+        <span id="syncLabel">Aguardando vídeo</span>
+        <span class="sep">•</span>
+        <span>Ping <b id="pingLabel">—</b></span>
+      </div>
+    </section>
+
+    <aside class="side">
+      <h2>Na sala</h2>
+      <ul id="members" class="members"></ul>
+
+      <h2>Chat</h2>
+      <div id="chat" class="chat" aria-live="polite"></div>
+      <form id="chatForm" class="chat-form" autocomplete="off">
+        <input id="chatInput" maxlength="500" placeholder="Mensagem…">
+        <button type="submit" class="primary sm">Enviar</button>
+      </form>
+    </aside>
+  </div>
+
+  <div id="toast" class="toast" hidden></div>
+
+  <script src="sync-engine.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

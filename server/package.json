@@ -1,0 +1,17 @@
+{
+  "name": "syncwatch-server",
+  "version": "1.0.0",
+  "description": "Servidor de salas do SyncWatch: assistir vídeos sincronizados com amigos",
+  "main": "server.js",
+  "private": true,
+  "scripts": {
+    "start": "node server.js",
+    "test": "node test/sync.test.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "ws": "^8.18.0"
+  }
+}

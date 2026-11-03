@@ -1,0 +1,11 @@
+# Hospedagem gratuita do servidor de salas no Render (link fixo).
+# Veja o passo a passo no LEIA-ME.md, seção "Link fixo".
+services:
+  - type: web
+    name: syncwatch
+    runtime: node
+    rootDir: server
+    buildCommand: npm install
+    startCommand: node server.js
+    plan: free
+    healthCheckPath: /health

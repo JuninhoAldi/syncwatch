@@ -1,0 +1,54 @@
+{
+  "name": "syncwatch",
+  "productName": "SyncWatch",
+  "version": "2.0.0",
+  "description": "Assista Netflix, Prime, Disney+, Max e YouTube sincronizado com seus amigos",
+  "main": "main.js",
+  "private": true,
+  "scripts": {
+    "bundle": "node scripts/bundle.js",
+    "prestart": "node scripts/bundle.js",
+    "start": "electron .",
+    "assinar-dev": "node scripts/evs-dev.js",
+    "predist": "node scripts/bundle.js",
+    "dist": "electron-builder --win nsis"
+  },
+  "devDependencies": {
+    "electron": "https://github.com/castlabs/electron-releases#v44.9.3+wvcus",
+    "electron-builder": "^26.0.0"
+  },
+  "build": {
+    "appId": "com.syncwatch.app",
+    "productName": "SyncWatch",
+    "electronDownload": {
+      "mirror": "https://github.com/castlabs/electron-releases/releases/download/v"
+    },
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "src/**/*",
+      "build/**/*",
+      "assets/**/*",
+      "package.json"
+    ],
+    "afterPack": "scripts/evs-sign.js",
+    "protocols": [
+      {
+        "name": "SyncWatch",
+        "schemes": ["syncwatch"]
+      }
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "assets/icon.ico"
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": false,
+      "createDesktopShortcut": true,
+      "shortcutName": "SyncWatch"
+    }
+  }
+}

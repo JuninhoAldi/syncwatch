@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src ws: wss:">
+  <title>SyncWatch</title>
+  <link rel="stylesheet" href="ui.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="logo" aria-hidden="true"></span><strong>SyncWatch</strong></div>
+
+    <div class="nav">
+      <button id="backBtn" class="icon" title="Voltar" disabled>
+        <svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>
+      </button>
+      <button id="fwdBtn" class="icon" title="Avançar" disabled>
+        <svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
+      </button>
+      <button id="reloadBtn" class="icon" title="Recarregar">
+        <svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.6M20 4v5h-5"/></svg>
+      </button>
+    </div>
+
+    <nav id="services" class="services"></nav>
+
+    <form id="addrForm" class="addr" autocomplete="off">
+      <span id="loadingDot" class="loading" hidden></span>
+      <input id="addr" placeholder="Endereço ou link do vídeo" spellcheck="false">
+    </form>
+
+    <button id="toggleSide" class="icon" title="Mostrar/ocultar sala">
+      <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M15 4v16"/></svg>
+    </button>
+  </header>
+
+  <div class="body">
+    <main id="stage" class="stage">
+      <div class="home">
+        <h1>O que vamos assistir?</h1>
+        <p>Escolha um serviço e entre na sua conta. O login fica salvo.</p>
+        <div id="tiles" class="tiles"></div>
+        <p class="small" id="drmInfo"></p>
+      </div>
+      <div id="crashed" class="crashed" hidden>
+        <p>A página do streaming travou.</p>
+        <button id="crashReload" class="primary">Recarregar</button>
+      </div>
+    </main>
+
+    <aside id="side" class="side">
+      <!-- Fora da sala -->
+      <section id="joinView">
+        <h2>Entrar numa sala</h2>
+        <form id="joinForm" autocomplete="off">
+          <label>Seu nome
+            <input id="nameInput" maxlength="24" placeholder="Ex.: Juninho" required>
+          </label>
+          <label>Servidor
+            <input id="serverInput" placeholder="ex.: syncwatch.onrender.com" required spellcheck="false">
+          </label>
+          <label>Sala
+            <div class="row">
+              <input id="roomInput" maxlength="32" placeholder="pipoca-1234" required spellcheck="false">
+              <button type="button" id="randomRoom" class="ghost">Gerar</button>
+            </div>
+          </label>
+          <button type="submit" class="primary wide">Entrar</button>
+        </form>
+        <p id="joinError" class="error" hidden></p>
+        <p class="hint">Seu amigo pode entrar pelo convite com um clique, se já tiver o app instalado.</p>
+      </section>
+
+      <!-- Na sala -->
+      <section id="roomView" hidden>
+        <div class="room-head">
+          <div>
+            <div class="eyebrow">Sala</div>
+            <div class="room-code" id="roomLabel"></div>
+          </div>
+          <div class="conn" id="conn"><span class="dot"></span><span id="connLabel">Conectando…</span></div>
+        </div>
+        <div class="room-actions">
+          <button id="inviteBtn" class="primary">Copiar convite</button>
+          <button id="leaveBtn" class="ghost">Sair</button>
+        </div>
+
+        <div class="card sync-card">
+          <div class="eyebrow">Sincronização</div>
+          <div id="syncLabel" class="sync-label">Abra um vídeo para começar</div>
+          <div class="small">Ping <b id="pingLabel">—</b></div>
+        </div>
+
+        <div id="followCard" class="card follow" hidden>
+          <div class="eyebrow">A sala está em outro vídeo</div>
+          <div id="followTitle" class="follow-title"></div>
+          <button id="followBtn" class="primary wide">Ir para o vídeo da sala</button>
+        </div>
+
+        <div class="eyebrow">Na sala</div>
+        <ul id="members" class="members"></ul>
+
+        <div class="eyebrow">Chat</div>
+        <div id="chat" class="chat" aria-live="polite"></div>
+        <form id="chatForm" class="chat-form" autocomplete="off">
+          <input id="chatInput" maxlength="500" placeholder="Mensagem…">
+          <button type="submit" class="primary">Enviar</button>
+        </form>
+      </section>
+    </aside>
+  </div>
+
+  <div id="toast" class="toast" hidden></div>
+
+  <script src="../../build/sync-engine.js"></script>
+  <script src="ui.js"></script>
+</body>
+</html>

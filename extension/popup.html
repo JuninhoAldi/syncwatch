@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header>
+    <span class="logo"></span>
+    <strong>SyncWatch</strong>
+    <span id="conn" class="conn"><span class="dot"></span><span id="connLabel">Desconectado</span></span>
+  </header>
+
+  <!-- Configuração -->
+  <section id="setup">
+    <label>Servidor
+      <input id="server" placeholder="ex.: abc-123.trycloudflare.com">
+    </label>
+    <div class="two">
+      <label>Sala
+        <input id="room" placeholder="pipoca-1234">
+      </label>
+      <label>Seu nome
+        <input id="name" maxlength="24" placeholder="Juninho">
+      </label>
+    </div>
+    <button id="connectBtn" class="primary">Conectar</button>
+    <p id="error" class="error" hidden></p>
+  </section>
+
+  <!-- Conectado -->
+  <section id="live" hidden>
+    <div class="roomline">
+      Sala <b id="roomLabel"></b> · ping <b id="ping">—</b>
+      <button id="disconnectBtn" class="link">Sair</button>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Aba sincronizada</div>
+      <div id="tabTitle" class="tab-title">Nenhuma</div>
+      <button id="syncTabBtn" class="primary">Sincronizar esta aba</button>
+    </div>
+
+    <div id="partnerCard" class="card" hidden>
+      <div class="card-title">Na sala agora</div>
+      <div id="partnerTitle" class="tab-title"></div>
+      <button id="openPartnerBtn" class="ghost">Abrir o mesmo vídeo</button>
+    </div>
+
+    <div class="card-title">Pessoas</div>
+    <ul id="members"></ul>
+
+    <div class="card-title">Chat</div>
+    <div id="chat"></div>
+    <form id="chatForm">
+      <input id="chatInput" maxlength="500" placeholder="Mensagem…" autocomplete="off">
+    </form>
+  </section>
+
+  <script src="popup.js"></script>
+</body>
+</html>
