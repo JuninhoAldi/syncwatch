@@ -20,9 +20,6 @@
   "build": {
     "appId": "com.syncwatch.app",
     "productName": "SyncWatch",
-    "electronDownload": {
-      "mirror": "https://github.com/castlabs/electron-releases/releases/download/v"
-    },
     "directories": {
       "output": "dist"
     },
@@ -37,7 +34,9 @@
     "protocols": [
       {
         "name": "SyncWatch",
-        "schemes": ["syncwatch"]
+        "schemes": [
+          "syncwatch"
+        ]
       }
     ],
     "win": {
@@ -49,6 +48,8 @@
       "perMachine": false,
       "createDesktopShortcut": true,
       "shortcutName": "SyncWatch"
-    }
-  }
+    },
+    "electronDist": "node_modules/electron/dist"
+  },
+  "author": "JuninhoAldi"
 }

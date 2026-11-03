@@ -1,3 +1,5 @@
 node_modules/
 app/build/
 app/dist/
+app/build-log.txt
+app/build-fim.txt
