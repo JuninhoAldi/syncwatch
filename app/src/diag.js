@@ -40,9 +40,31 @@ function start({ app, ses, partition }) {
       `sessao=${!!cookie.session}`, `sameSite=${cookie.sameSite}`, `secure=${cookie.secure}`);
   });
 
-  // Requisições que falharam ou deram erro HTTP
+  // API da Netflix: quais cookies vão junto (só os NOMES) e cabeçalhos de origem
+  const API = ['*://www.netflix.com/nq/*', '*://www.netflix.com/api/*'];
+  ses.webRequest.onBeforeSendHeaders({ urls: API }, (d, cb) => {
+    const h = d.requestHeaders || {};
+    const cookieHeader = h.Cookie || h.cookie || '';
+    const names = cookieHeader.split(';').map((c) => c.split('=')[0].trim()).filter(Boolean);
+    log('api-envio', d.method, stripQuery(d.url),
+      `cookies=[${names.join(',')}]`,
+      `origin=${h.Origin || h.origin || '-'}`,
+      `sec-fetch-site=${h['Sec-Fetch-Site'] || h['sec-fetch-site'] || '-'}`,
+      `cabecalhos=[${Object.keys(h).join(',')}]`);
+    cb({ requestHeaders: d.requestHeaders });
+  });
+
+  // Requisições que falharam ou deram erro HTTP (+ motivo que o servidor devolveu)
   ses.webRequest.onCompleted({ urls: ['*://*/*'] }, (d) => {
-    if (d.statusCode >= 400) log('http', d.statusCode, d.method, stripQuery(d.url));
+    if (d.statusCode < 400) return;
+    let extra = '';
+    if (/netflix\.com/.test(d.url) && d.responseHeaders) {
+      const keep = Object.entries(d.responseHeaders)
+        .filter(([k]) => /^(x-netflix|www-authenticate|x-originating|x-reason|x-error)/i.test(k))
+        .map(([k, v]) => `${k}=${String(v).slice(0, 160)}`);
+      extra = ` resposta=[${keep.join(' | ')}]`;
+    }
+    log('http', d.statusCode, d.method, stripQuery(d.url) + extra);
   });
   ses.webRequest.onErrorOccurred({ urls: ['*://*/*'] }, (d) => {
     if (d.error === 'net::ERR_ABORTED') return;
