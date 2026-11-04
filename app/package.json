@@ -1,7 +1,7 @@
 {
   "name": "syncwatch",
   "productName": "SyncWatch",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Assista Netflix, Prime, Disney+, Max e YouTube sincronizado com seus amigos",
   "main": "main.js",
   "private": true,
