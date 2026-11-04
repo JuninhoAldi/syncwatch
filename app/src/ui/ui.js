@@ -62,6 +62,7 @@
   $('backBtn').onclick = () => sw.back();
   $('fwdBtn').onclick = () => sw.forward();
   $('reloadBtn').onclick = () => sw.reload();
+  $('homeBtn').onclick = () => { $('crashed').hidden = true; sw.home(); };
   $('crashReload').onclick = () => { $('crashed').hidden = true; sw.reload(); };
 
   $('addrForm').onsubmit = (e) => {

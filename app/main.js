@@ -134,6 +134,7 @@ function createStreamView() {
   }));
 
   const onNav = () => {
+    if (!viewAttached) return;
     sendNavState();
     injectNetflixBridge();
     broadcastRoom(); // a página mudou: recalcula se é o mesmo vídeo da sala
@@ -156,6 +157,15 @@ function attachView() {
   win.contentView.addChildView(view);
   viewAttached = true;
   applyBounds();
+}
+
+/** Volta para a tela inicial: esconde o navegador do streaming e para o vídeo. */
+function detachView() {
+  if (!win || !view) return;
+  if (viewAttached) win.contentView.removeChildView(view);
+  viewAttached = false;
+  view.webContents.loadURL('about:blank').catch(() => {}).finally(broadcastRoom);
+  send('stream:nav', { url: '', title: '', canGoBack: false, canGoForward: false, home: true });
 }
 
 function applyBounds() {
@@ -325,7 +335,8 @@ ipcMain.handle('nav', async (e, req) => {
     }
     case 'back': if (wc.navigationHistory.canGoBack()) wc.navigationHistory.goBack(); return true;
     case 'forward': if (wc.navigationHistory.canGoForward()) wc.navigationHistory.goForward(); return true;
-    case 'reload': wc.reload(); return true;
+    case 'reload': if (viewAttached) wc.reload(); return true;
+    case 'home': detachView(); return true;
     case 'roomMedia': {
       const m = lastRoom.state && lastRoom.state.media;
       if (!m) return false;

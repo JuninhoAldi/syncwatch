@@ -10,6 +10,7 @@ contextBridge.exposeInMainWorld('sw', {
   back: () => ipcRenderer.invoke('nav', { action: 'back' }),
   forward: () => ipcRenderer.invoke('nav', { action: 'forward' }),
   reload: () => ipcRenderer.invoke('nav', { action: 'reload' }),
+  home: () => ipcRenderer.invoke('nav', { action: 'home' }),
   goToRoomMedia: () => ipcRenderer.invoke('nav', { action: 'roomMedia' }),
   setLayout: (rect) => ipcRenderer.send('ui:layout', rect),
 
