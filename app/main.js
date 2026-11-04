@@ -13,6 +13,7 @@ const {
 } = require('electron');
 const path = require('path');
 const fs = require('fs');
+const diag = require('./src/diag');
 
 const PARTITION = 'persist:streaming'; // logins ficam salvos aqui
 const PROTOCOL = 'syncwatch';
@@ -110,6 +111,7 @@ async function createWindow() {
 function createStreamView() {
   const ses = session.fromPartition(PARTITION);
   ses.setUserAgent(cleanUserAgent(ses.getUserAgent()));
+  diag.start({ app, ses, partition: PARTITION });
 
   view = new WebContentsView({
     webPreferences: {
@@ -123,6 +125,7 @@ function createStreamView() {
   });
   view.setBackgroundColor('#000000');
   const wc = view.webContents;
+  diag.watchContents(wc);
 
   // Pop-ups (login com Google/Apple etc.) abrem numa janela com a mesma sessão
   wc.setWindowOpenHandler(() => ({
