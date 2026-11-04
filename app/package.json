@@ -1,7 +1,7 @@
 {
   "name": "syncwatch",
   "productName": "SyncWatch",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "Assista Netflix, Prime, Disney+, Max e YouTube sincronizado com seus amigos",
   "main": "main.js",
   "private": true,
@@ -30,7 +30,6 @@
       "assets/**/*",
       "package.json"
     ],
-    "afterPack": "scripts/evs-sign.js",
     "protocols": [
       {
         "name": "SyncWatch",
@@ -49,7 +48,8 @@
       "createDesktopShortcut": true,
       "shortcutName": "SyncWatch"
     },
-    "electronDist": "node_modules/electron/dist"
+    "electronDist": "node_modules/electron/dist",
+    "afterSign": "scripts/evs-sign.js"
   },
   "author": "JuninhoAldi"
 }

@@ -31,6 +31,20 @@ function signPackage(dir) {
       'A assinatura EVS falhou. Se a sessão expirou, rode: py -m castlabs_evs.account reauth',
     );
   }
+  verifyPackage(dir, py);
 }
 
-module.exports = { findPython, signPackage };
+/** Confere se a assinatura VMP continua válida (falha cedo em vez de a Netflix recusar depois). */
+function verifyPackage(dir, py) {
+  py = py || findPython();
+  console.log(`[evs] verificando assinatura em ${dir}`);
+  const r = spawnSync(py, ['-m', 'castlabs_evs.vmp', 'verify-pkg', dir], { encoding: 'utf8' });
+  const out = `${r.stdout || ''}${r.stderr || ''}`;
+  process.stdout.write(out);
+  if (r.status !== 0 || /signature (is )?invalid|verification failed|not valid/i.test(out)) {
+    throw new Error('A assinatura VMP NÃO está válida depois de assinar. O instalador foi interrompido.');
+  }
+  console.log('[evs] assinatura VMP válida');
+}
+
+module.exports = { findPython, signPackage, verifyPackage };
